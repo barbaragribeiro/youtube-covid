@@ -11,11 +11,18 @@ def collect_channel_subscribers(channel_id):
 
     html = urllib.request.urlopen(url).read().decode("utf-8")
 
-    channel_title = re.search("<title>(.+?)</title>", html, re.DOTALL).group(1)
-    channel_title = channel_title.replace(" - YouTube", "").strip()
+    channel_title = re.search("<meta name=\"title\" content=\"([^\"]+)\"", html).group(1)
     
-    channel_subscribers = re.search("<span class=\"yt-subscription-button-subscriber-count-branded-horizontal subscribed yt-uix-tooltip\" title=\"(.+?)\"", html).group(1)
-    channel_subscribers = int(channel_subscribers.replace(".", ""))
+    channel_subscribers = re.search("subscriberCountText\":{\"runs\":\[\{\"text\":\"([^\"]+)\"", html).group(1)
+
+    mult = 1
+    if "mil" in channel_subscribers:
+        mult = 1000
+
+    elif "mi" in channel_subscribers:
+        mult = 1000000
+
+    channel_subscribers = int(float(re.sub("[^0-9,]", "", channel_subscribers).replace(",",".")) * mult)
 
     return channel_title, channel_subscribers
 

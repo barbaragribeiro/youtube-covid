@@ -8,20 +8,10 @@ import codecs
 
 def collect_closed_captions(video_id, lang="pt"):
 
-    url_video = "https://www.youtube.com/watch?v={}".format(video_id)
-    html = urllib.request.urlopen(url_video, timeout=30).read().decode("utf-8")
-
-    search_url = re.search("\'TTS_URL\': (.*),", html)
-
-    if search_url:
-        url_partial = json.loads(search_url.group(1))
-        if len(url_partial) > 0:
-            url_caption = "{}&kind=asr&lang={}&fmt=srv3".format(url_partial, lang)
-            data_caption = urllib.request.urlopen(url_caption, timeout=30).read().decode("utf-8")
-        else:
-            data_caption = None
-    else:
-        data_caption = None
+    url_caption = "http://video.google.com/timedtext?lang={}&v={}".format(lang, video_id)
+    #Also works
+    #url_caption = "https://www.youtube.com/api/timedtext?lang={}&v={}".format(lang, video_id)
+    data_caption = urllib.request.urlopen(url_caption, timeout=30).read().decode("utf-8")
 
     return data_caption
 
@@ -45,8 +35,8 @@ if __name__ == "__main__":
 
         with open(outfile_name, "w", encoding="utf-8") as outfile:
             
-            #raw = collect_closed_captions(video_id)
-            raw = collect_closed_captions(video_id, lang="en")
+            raw = collect_closed_captions(video_id)
+            #raw = collect_closed_captions(video_id, lang="en")
 
             if raw:
                 outfile.write(raw)

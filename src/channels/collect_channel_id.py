@@ -7,9 +7,15 @@ import json
 
 def collect_channel_id(channel_url):
 
-    html = urllib.request.urlopen(channel_url).read().decode("utf-8")
+    if "channel" in channel_url:
 
-    channel_id = re.search("data-channel-external-id=\"([^\"]+)\"", html).group(1)
+        channel_id = channel_url.split("channel/")[-1]
+
+    else:
+
+        html = urllib.request.urlopen(channel_url).read().decode("utf-8")
+
+        channel_id = re.search("externalChannelId\":\"([^\"]+)\"", html).group(1)
 
     return channel_id
 

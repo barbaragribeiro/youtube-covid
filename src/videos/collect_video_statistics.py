@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
     # Filter videos collected
     videos = [ video for video in videos 
-                   if not os.path.exists("{}/data/videos/{}/statistics.json")  ]
+                   if not os.path.exists("{}/data/videos/{}/statistics.json".format(DIR_BASE,video))]
 
     video_chunks = [videos[i:i+50] for i in range(0, len(videos), 50)] 
 
