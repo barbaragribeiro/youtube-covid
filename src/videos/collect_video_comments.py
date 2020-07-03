@@ -88,7 +88,7 @@ if __name__ == "__main__":
     #for video_id in videos:
     while len(videos_queue) > 0:
         video_id, tryrun = videos_queue.popleft()
-        print(video_id, tryrun)
+        print("+ Collecting {} comments".format(video_id))
 
         logging.info("Remaining: {} videos".format(len(videos_queue)))
         logging.info("[vid = {}] Started".format(video_id))

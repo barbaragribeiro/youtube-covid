@@ -55,11 +55,17 @@ with open(outfile_name, "w") as outfile:
             except:
                 content = None
 
-            with open("{}/transcript.xml".format(dirvideo), "r", encoding="utf-8") as infile:
-                transcript = infile.read()           
+            try:
+                with open("{}/transcript.xml".format(dirvideo), "r", encoding="utf-8") as infile:
+                    transcript = infile.read()           
+            except:
+                transcript = None
 
-            with open("{}/subtitle.xml".format(dirvideo), "r", encoding="utf-8") as infile:
-                subtitle = infile.read()  
+            try:
+                with open("{}/subtitle.xml".format(dirvideo), "r", encoding="utf-8") as infile:
+                    subtitle = infile.read()
+            except:
+                subtitle = None
 
             obj = {
                 "video_id"       : video_id,

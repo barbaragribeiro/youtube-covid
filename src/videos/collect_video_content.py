@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     video_chunks = [videos[i:i+50] for i in range(0, len(videos), 50)] 
 
-    print(len(video_chunks))
+    print("Chunks: {}".format(len(video_chunks)))
 
     for chunk_of_ids in video_chunks:
 
@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
         for video_id, statistics in videos_info:
 
-            print("+ Collected {}".format(video_id))
+            print("+ Collected {} content".format(video_id))
 
             outdir = "{}/data/videos/{}".format(DIR_BASE, video_id)
             if not os.path.exists(outdir):

@@ -118,6 +118,8 @@ if __name__ == "__main__":
 
     for i, video_id in enumerate(videos, 1):
 
+        print("+ Collecting {} replies".format(video_id))
+
         video_str = "vid = {} ({}/{})".format(video_id, i, len(videos))
 
         logging.info("[{}] Started".format(video_str))

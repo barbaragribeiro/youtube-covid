@@ -22,15 +22,15 @@ def collect_closed_captions(video_id):
             data_caption = None
         
         if("name=" in url_partial):
-            name = "subtitle"
+            type_ = "subtitle"
         else:
-            name = "transcript"
+            type_ = "transcript"
 
     else:
         data_caption = None
-        name = None
+        type_ = None
 
-    return data_caption, name
+    return data_caption, type_
 
 
 if __name__ == "__main__":
@@ -44,12 +44,12 @@ if __name__ == "__main__":
 
     outdir = "{}/data/videos/{}".format(DIR_BASE, video_id)
     
-    raw, name = collect_closed_captions(video_id)
+    raw, type_ = collect_closed_captions(video_id)
 
-    if (name):
+    if (type_):
         if not os.path.exists(outdir):
             os.mkdir(outdir)
-        outfile_name = "{}/".format(outdir) + name + ".xml"
+        outfile_name = "{}/".format(outdir) + type_ + ".xml"
 
         if not os.path.exists(outfile_name):
 

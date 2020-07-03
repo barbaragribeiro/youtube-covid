@@ -5,12 +5,16 @@ import csv
 
 DIR_BASE = "../.."
 
-with open("{}/data/videos-filtered.jsonl".format(DIR_BASE), "r") as infile,\
+with open("{}/data/videos.jsonl".format(DIR_BASE), "r") as infile,\
      open("{}/data/video_stats.tsv".format(DIR_BASE), "w") as outfile:
 
-    fields = ["channel_type", "channel_id", "video_id", 
+    #fields = ["channel_type", "channel_id", "video_id", 
+    #          "video_duration", "view_count", "comment_count",
+    #          "favorite_count", "like_count", "dislike_count" ]
+    fields = ["channel_id", "video_id", 
               "video_duration", "view_count", "comment_count",
               "favorite_count", "like_count", "dislike_count" ]
+
 
     csvw = csv.DictWriter(outfile, fieldnames=fields, delimiter="\t")
 

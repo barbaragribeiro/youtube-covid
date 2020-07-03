@@ -14,7 +14,7 @@ done < $DIR_BASE/data/channels/list.txt
 ./collect_video_snippet.py
 
 while read video_id; do
-    echo "+ Collecting $video_id"
+    echo "+ Collecting $video_id transcript/subtitles"
     ./collect_video_transcript.py $video_id
 done < $DIR_BASE/data/videos/list.txt
 

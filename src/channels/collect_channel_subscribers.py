@@ -15,12 +15,14 @@ def collect_channel_subscribers(channel_id):
     
     channel_subscribers = re.search("subscriberCountText\":{\"runs\":\[\{\"text\":\"([^\"]+)\"", html).group(1)
 
-    mult = 1
     if "mil" in channel_subscribers:
         mult = 1000
 
     elif "mi" in channel_subscribers:
         mult = 1000000
+
+    else:
+        mult = 1
 
     channel_subscribers = int(float(re.sub("[^0-9,]", "", channel_subscribers).replace(",",".")) * mult)
 
