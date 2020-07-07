@@ -60,9 +60,7 @@ def collect_video_comreplies(video_str, video_id, comments_file):
 
     comreplies = []
 
-    #for i, comment_id in enumerate(comments_with_reply, 1):
-    #For test purposes only
-    for i, comment_id in enumerate(comments_with_reply[:2], 1):
+    for i, comment_id in enumerate(comments_with_reply, 1):
         #logging.info("[{}] Collecting replies for comment {} ({}/{}) (try {})".format(video_str, comment_id, i, len(comments_with_reply)))
 
         #comment_replies = collect_comment_replies(comment_id)

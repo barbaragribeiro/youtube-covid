@@ -10,9 +10,7 @@ def collect_channel_videos(channel_id):
 
     videos = []
 
-    #url_base = "https://www.googleapis.com/youtube/v3/search?part=id&maxResults=50&type=video&channelId={}&key={}".format(channel_id, resources["API_KEY"])
-    #For test purposes only
-    url_base = "https://www.googleapis.com/youtube/v3/search?part=id&maxResults=2&type=video&channelId={}&key={}".format(channel_id, resources["API_KEY"])
+    url_base = "https://www.googleapis.com/youtube/v3/search?part=id&maxResults=50&type=video&channelId={}&key={}".format(channel_id, resources["API_KEY"])
     url = url_base
 
     while url:
@@ -26,11 +24,10 @@ def collect_channel_videos(channel_id):
 
         videos.extend(new_videos)
 
-        #I commented these lines to test with only 2 videos per channel
-        #if "nextPageToken" in obj:
-        #    url = "{}&pageToken={}".format(url_base, obj["nextPageToken"])
-        #else:
-        url = None
+        if "nextPageToken" in obj:
+            url = "{}&pageToken={}".format(url_base, obj["nextPageToken"])
+        else:
+            url = None
 
     return videos
 

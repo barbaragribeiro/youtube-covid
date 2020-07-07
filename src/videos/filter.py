@@ -20,6 +20,8 @@ def clean_text(raw_text):
 DIR_BASE = "../.."
 
 channel_type= {}
+
+#channel_type must have been filled in channels_names.tsv
 with open("{}/data/channels_names.tsv".format(DIR_BASE), "r") as infile:
     csvr = csv.DictReader(infile, delimiter="\t")
     for row in csvr:
@@ -41,17 +43,19 @@ with open("{}/data/videos.jsonl".format(DIR_BASE), "r") as infile, \
         else:
             text_cleaned = clean_text(obj["transcript"])
 
-        lang, prob = lang_ident.classify(text_cleaned.lower())
+        if len(text_cleaned) > 0 and obj["channel_id"] in channel_type:
 
-        if len(text_cleaned) > 0 and lang == "en" and prob >= 0.8 and obj["channel_id"] in channel_type:
+            lang, prob = lang_ident.classify(text_cleaned.lower())
 
-            selected_videos.add(obj["video_id"])
+            if lang == "pt" and prob >= 0.8:
 
-            obj["transcript"] = text_cleaned
+                selected_videos.add(obj["video_id"])
 
-            obj["channel_type"] = channel_type[obj["channel_id"]]
+                obj["transcript"] = text_cleaned
 
-            outfile.write("{}\n".format(json.dumps(obj)))
+                obj["channel_type"] = channel_type[obj["channel_id"]]
+
+                outfile.write("{}\n".format(json.dumps(obj)))
 
 
 with open("{}/data/comments.jsonl".format(DIR_BASE), "r") as infile, \
@@ -67,7 +71,7 @@ with open("{}/data/comments.jsonl".format(DIR_BASE), "r") as infile, \
 
             lang, prob = lang_ident.classify(text_cleaned.lower())
 
-            if lang == "en" and prob >= 0.8:
+            if lang == "pt" and prob >= 0.8:
 
                 obj["comment_text"] = text_cleaned
 
