@@ -3,10 +3,6 @@
 DIR_BASE="../.."
 
 #find $DIR_BASE/data -iname "videos.txt" -exec cat {} \; > $DIR_BASE/data/videos/list.txt
-rm $DIR_BASE/data/videos/list.txt
-while read channel_id; do
-    cat $DIR_BASE/data/channels/$channel_id/videos.txt >> $DIR_BASE/data/videos/list.txt
-done < $DIR_BASE/data/channels/list.txt
 
 #./collect_video_subtitles.py
 ./collect_video_statistics.py

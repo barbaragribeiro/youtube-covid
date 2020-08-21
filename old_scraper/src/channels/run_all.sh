@@ -17,6 +17,12 @@ while read channel_id; do
 done < $DIR_BASE/data/channels/list.txt
 #done < $DIR_BASE/data/channels/list.txt.NEW
 
+#Create list of all video ids to be used later
+rm $DIR_BASE/data/videos/list.txt
+while read channel_id; do
+    cat $DIR_BASE/data/channels/$channel_id/videos.txt >> $DIR_BASE/data/videos/list.txt
+done < $DIR_BASE/data/channels/list.txt
+
 cat $DIR_BASE/data/channels/list.txt | xargs -n 1 -I {} ./collect_channel_subscribers.py {} > $DIR_BASE/data/channels/n_subscribers.txt
 #cat $DIR_BASE/data/channels/list.txt.NEW | xargs -n 1 -I {} ./collect_channel_subscribers.py {} > $DIR_BASE/data/channels/n_subscribers.txt.NEW
 
