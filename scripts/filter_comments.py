@@ -35,7 +35,7 @@ def main():
 
         for root, dirs, files in os.walk(folder):
             for file in files:
-                if file.endswith('comments.jsonl'):
+                if file.endswith('.comments.jsonl'):
                     print('Reading ' + file)
                     video_id = file.split('.')[0]
                     with open(os.path.join(root,file)) as json_file:
@@ -49,7 +49,7 @@ def main():
     #Number of votes is in the form '999', '3,9 mil', '1,2 mi'
     df['votes'] = df['votes'].apply(lambda x : toInt(x)).astype('Int64')
 
-    #Extract parent id for replies and adds replies count
+    #Extract parent id and add replies count
     df['parent_id'] = df['cid'].apply(lambda x : x.split('.')[0] if '.' in x else None)
     replies_count = df.groupby('parent_id')['cid']\
                     .count()\
@@ -57,7 +57,7 @@ def main():
                     .astype('Int64')
     df = df.join(replies_count, how='left', on='cid').fillna(0)
 
-    #Adds video title
+    #Add video title
     videos = pd.read_csv(video_data, usecols=['id','title'])
     videos = videos.rename(columns={'id': 'video_id', 'title' : 'video_title'})
     df = pd.merge(df, videos, how='left', on='video_id')
