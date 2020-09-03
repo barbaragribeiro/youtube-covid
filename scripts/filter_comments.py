@@ -3,6 +3,7 @@ import sys
 import os
 import json
 import pandas as pd
+import argparse
 
 #Files are expected to be in the format .comments.jsonl
 
@@ -30,25 +31,21 @@ def dicts_generator(folder):
                         del dic['photo']
                         yield(dic)
 
-def main():
-    folder = sys.argv[1]
-    output = sys.argv[2]
-    video_data = sys.argv[3]
-
-    if os.sep in output:
-        outdir = os.path.dirname(output)
+def filter():
+    if os.sep in args.output:
+        outdir = os.path.dirname(args.output)
         if not os.path.exists(outdir):
             os.makedirs(outdir)
 
-    comments_gen = dicts_generator(folder)
+    comments_gen = dicts_generator(args.folder)
             
     #Post-processing
     df = pd.DataFrame(comments_gen)
 
-    #Number of votes is in the form '999', '3,9 mil', '1,2 mi'
+    #Change number of votes from '3,9 mil' or '1,2 mi' to 3900 or 1200000
     df['votes'] = df['votes'].astype('str').apply(lambda x : toInt(x)).astype('Int64')
 
-    #Extract parent id and add replies count
+    #Extracts parent id and add replies count
     df['parent_id'] = df['cid'].apply(lambda x : x.split('.')[0] if '.' in x else None)
     replies_count = df.groupby('parent_id')['cid']\
                     .count()\
@@ -57,18 +54,27 @@ def main():
     df = df.join(replies_count, how='left', on='cid')
     df = df.fillna({'replies_count':0})
 
-    #Add video and channel info
-    videos = pd.read_csv(video_data, usecols=['id','title','uploader','uploader_id'])
+    #Adds video and channel info
+    videos = pd.read_csv(args.video_info, usecols=['id','title','uploader','uploader_id'])
     videos = videos.rename(columns={'id': 'video_id', 'title' : 'video_title'})
     df = pd.merge(df, videos, how='left', on='video_id')
 
-    df.to_csv(output, index=False)
+    df.to_csv(args.output, index=False)
 
-    #Sorting
-    df.sort_values('votes', ascending=False, inplace=True)
-    df.to_csv(output.split('.')[0] + '_sorted_votes.csv', index=False)
-    df.sort_values('replies', ascending=False, inplace=True)
-    df.to_csv(output.split('.')[0] + '_sorted_replies.csv', index=False)
+    if args.sort:
+        #Sorting
+        df.sort_values('votes', ascending=False, inplace=True)
+        df.to_csv(args.output.split('.')[0] + '_sorted_votes.csv', index=False)
+        df.sort_values('replies', ascending=False, inplace=True)
+        df.to_csv(args.output.split('.')[0] + '_sorted_replies.csv', index=False)
+
+def main(argv):
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--help', '-h', action='help', default=argparse.SUPPRESS, help='Show help')
+    parser.add_argument('--folder', '-f', help='Path to folder with all video data')
+    parser.add_argument('--output', '-o', help='Output filename')
+    parser.add_argument('--video-info',help='File with video info')
+    parser.add_argument('--sort', help='Create sorted csvs as well')
 
 if __name__=='__main__':
-    main()
+    main(sys.argv[1:])
