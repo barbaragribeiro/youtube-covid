@@ -70,11 +70,10 @@ def filter():
 
 def main(argv):
     parser = argparse.ArgumentParser()
-    parser.add_argument('--help', '-h', action='help', default=argparse.SUPPRESS, help='Show help')
     parser.add_argument('--folder', '-f', help='Path to folder with all video data')
     parser.add_argument('--output', '-o', help='Output filename')
-    parser.add_argument('--video-info',help='File with video info')
-    parser.add_argument('--sort', help='Create sorted csvs as well')
+    parser.add_argument('--video-info', help='File with video info', action=store)
+    parser.add_argument('--sort', help='Create sorted csvs as well', action="store_true")
 
 if __name__=='__main__':
     main(sys.argv[1:])

@@ -36,10 +36,9 @@ def filter(args):
 
 def main(argv):
     parser = argparse.ArgumentParser()
-    parser.add_argument('--help', '-h', action='help', default=argparse.SUPPRESS, help='Show help')
     parser.add_argument('--folder', '-f', help='Path to folder with all video data')
     parser.add_argument('--output', '-o', help='Output filename')
-    parser.add_argument('--sort', help='Create sorted csvs as well')
+    parser.add_argument('--sort', help='Create sorted csvs as well', action="store_true")
 
     args = parser.parse_args(argv)
 
