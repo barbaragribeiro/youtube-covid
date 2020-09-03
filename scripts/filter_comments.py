@@ -31,14 +31,14 @@ def dicts_generator(folder):
                         del dic['photo']
                         yield(dic)
 
-def filter():
+def filter(args):
     if os.sep in args.output:
         outdir = os.path.dirname(args.output)
         if not os.path.exists(outdir):
             os.makedirs(outdir)
 
     comments_gen = dicts_generator(args.folder)
-            
+
     #Post-processing
     df = pd.DataFrame(comments_gen)
 
@@ -72,8 +72,12 @@ def main(argv):
     parser = argparse.ArgumentParser()
     parser.add_argument('--folder', '-f', help='Path to folder with all video data')
     parser.add_argument('--output', '-o', help='Output filename')
-    parser.add_argument('--video-info', help='File with video info', action=store)
+    parser.add_argument('--video-info', help='File with video info')
     parser.add_argument('--sort', help='Create sorted csvs as well', action="store_true")
+
+    args = parser.parse_args(argv)
+
+    filter(args)
 
 if __name__=='__main__':
     main(sys.argv[1:])
