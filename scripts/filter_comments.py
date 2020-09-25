@@ -41,9 +41,8 @@ def filter(args):
 
     #Post-processing
     df = pd.DataFrame(comments_gen)
-
     #Change number of votes from '3,9 mil' or '1,2 mi' to 3900 or 1200000
-    df['votes'] = df['votes'].astype('str').apply(lambda x : toInt(x)).astype('Int64')
+    df['votes'] = df['votes'].apply(lambda x : toInt(x)).astype('Int64')
 
     #Extracts parent id and add replies count
     df['parent_id'] = df['cid'].apply(lambda x : x.split('.')[0] if '.' in x else None)
